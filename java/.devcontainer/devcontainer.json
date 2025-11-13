@@ -1,0 +1,28 @@
+{
+  "name": "Java Senku Project",
+  // Usa la imagen de desarrollo estándar de Microsoft para Java.
+  "image": "mcr.microsoft.com/devcontainers/java:11", 
+
+  // Añade la característica "desktop-lite" que instala un escritorio y un servidor VNC.
+  "features": {
+    "ghcr.io/devcontainers/features/desktop-lite:1": {
+      "password": "vscode", // Puedes cambiar esta contraseña si quieres
+      "webVnc": true // Habilita el acceso a VNC a través del navegador
+    }
+  },
+
+  // Reenvía los puertos necesarios para que puedas acceder a la interfaz gráfica.
+  "forwardPorts": [5901, 6080],
+
+  // Al crear el contenedor, instala Maven.
+  "postCreateCommand": "sudo apt-get update && sudo apt-get install -y maven",
+
+  // Configuración para VS Code dentro del Codespace.
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "vscjava.vscode-java-pack"
+      ]
+    }
+  }
+}
