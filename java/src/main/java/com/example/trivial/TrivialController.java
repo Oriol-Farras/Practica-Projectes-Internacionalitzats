@@ -14,43 +14,43 @@ import java.util.*;
 public class TrivialController {
 
     @FXML
-    private Label preguntaLabel;
+    private Label questionLabel;
     @FXML
-    private GridPane opcionesGrid;
+    private GridPane optionsGrid;
     @FXML
-    private Label resultadoLabel;
+    private Label resultLabel;
     @FXML
-    private Button siguienteButton;
+    private Button nextButton;
     @FXML
     private ChoiceBox<Locale> languageSelector;
     
     private MainApp mainApp;
     private ResourceBundle bundle;
-    private int preguntaActual = 0;
-    private int totalPreguntas;
-    private List<Button> botonesOpcion = new ArrayList<>();
+    private int currentQuestionIndex = 0;
+    private int totalQuestions;
+    private final List<Button> optionButtons = new ArrayList<>();
 
     @FXML
     public void initialize() {
 
         bundle = ResourceBundle.getBundle("com.example.trivial.bundles.messages");
-        totalPreguntas = Integer.parseInt(bundle.getString("total.questions"));
+        totalQuestions = Integer.parseInt(bundle.getString("total.questions"));
         
         setupLanguageSelector();
-        crearBotones();
+        createAnswerButtons();
         updateUITexts();
-        cargarPregunta();
+        loadQuestion();
     }
 
     /**
-     * Permite a MainApp pasar una referencia de sí misma al controlador.
+     * Allows MainApp to pass a reference of itself to the controller.
      */
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
     }
 
     /**
-     * Configura el selector de idioma, sus opciones y su comportamiento.
+     * Configures the language selector, its options, and its behavior.
      */
     private void setupLanguageSelector() {
 
@@ -82,74 +82,74 @@ public class TrivialController {
     }
 
     /**
-     * Actualiza los textos de la UI que no cambian con cada pregunta (ej. botón "Siguiente").
+     * Updates UI texts that do not change with each question (e.g., the "Next" button).
      */
     private void updateUITexts() {
-        siguienteButton.setText(bundle.getString("button.next"));
-        preguntaLabel.setText(bundle.getString("game.loading"));
+        nextButton.setText(bundle.getString("button.next"));
+        questionLabel.setText(bundle.getString("game.loading"));
     }
     
     /**
-     * Crea los 4 botones de respuesta y los añade a la cuadrícula. Se hace una sola vez.
+     * Creates the 4 answer buttons and adds them to the grid. This is done only once.
      */
-    private void crearBotones() {
+    private void createAnswerButtons() {
         for (int i = 0; i < 4; i++) {
             Button button = new Button();
-            button.setOnAction(this::opcionSeleccionada);
-            botonesOpcion.add(button);
-            opcionesGrid.add(button, i % 2, i / 2);
+            button.setOnAction(this::handleAnswerSelection);
+            optionButtons.add(button);
+            optionsGrid.add(button, i % 2, i / 2); // Adds to a 2x2 grid
         }
     }
     
     /**
-     * Carga los datos de la pregunta actual desde el ResourceBundle.
+     * Loads the data for the current question from the ResourceBundle.
      */
-    private void cargarPregunta() {
-        resetearBotones();
-        resultadoLabel.setText("");
-        siguienteButton.setVisible(false);
-        opcionesGrid.setDisable(false);
+    private void loadQuestion() {
+        resetButtonStyles();
+        resultLabel.setText("");
+        nextButton.setVisible(false);
+        optionsGrid.setDisable(false);
         
-        String keyBase = "question." + (preguntaActual + 1);
-        preguntaLabel.setText(bundle.getString(keyBase + ".statement"));
+        String keyBase = "question." + (currentQuestionIndex + 1);
+        questionLabel.setText(bundle.getString(keyBase + ".statement"));
 
-        String respuestaCorrecta = bundle.getString(keyBase + ".correct");
-        List<String> opciones = new ArrayList<>();
-        opciones.add(respuestaCorrecta);
-        opciones.add(bundle.getString(keyBase + ".wrong1"));
-        opciones.add(bundle.getString(keyBase + ".wrong2"));
-        opciones.add(bundle.getString(keyBase + ".wrong3"));
+        String correctAnswer = bundle.getString(keyBase + ".correct");
+        List<String> options = new ArrayList<>();
+        options.add(correctAnswer);
+        options.add(bundle.getString(keyBase + ".wrong1"));
+        options.add(bundle.getString(keyBase + ".wrong2"));
+        options.add(bundle.getString(keyBase + ".wrong3"));
         
-        Collections.shuffle(opciones);
+        Collections.shuffle(options);
 
-        for (int i = 0; i < botonesOpcion.size(); i++) {
-            Button button = botonesOpcion.get(i);
-            String opcionActual = opciones.get(i);
-            button.setText(opcionActual);
-            button.setUserData(opcionActual.equals(respuestaCorrecta));
+        for (int i = 0; i < optionButtons.size(); i++) {
+            Button button = optionButtons.get(i);
+            String currentOption = options.get(i);
+            button.setText(currentOption);
+            button.setUserData(currentOption.equals(correctAnswer));
         }
     }
     
     /**
-     * Se ejecuta cuando el usuario hace clic en un botón de respuesta.
+     * Handles the user clicking an answer button.
      */
-    private void opcionSeleccionada(ActionEvent event) {
-        opcionesGrid.setDisable(true);
-        siguienteButton.setVisible(true);
+    private void handleAnswerSelection(ActionEvent event) {
+        optionsGrid.setDisable(true);
+        nextButton.setVisible(true);
 
-        Button botonSeleccionado = (Button) event.getSource();
-        boolean esCorrecto = (boolean) botonSeleccionado.getUserData();
+        Button selectedButton = (Button) event.getSource();
+        boolean isCorrect = (boolean) selectedButton.getUserData();
 
-        if (esCorrecto) {
-            resultadoLabel.setText(bundle.getString("feedback.correct"));
-            resultadoLabel.setStyle("-fx-text-fill: #2ECC71;");
+        if (isCorrect) {
+            resultLabel.setText(bundle.getString("feedback.correct"));
+            resultLabel.setStyle("-fx-text-fill: #2ECC71;");
         } else {
-            resultadoLabel.setText(bundle.getString("feedback.incorrect"));
-            resultadoLabel.setStyle("-fx-text-fill: #E74C3C;");
-            botonSeleccionado.getStyleClass().add("wrong-answer");
+            resultLabel.setText(bundle.getString("feedback.incorrect"));
+            resultLabel.setStyle("-fx-text-fill: #E74C3C;");
+            selectedButton.getStyleClass().add("wrong-answer");
         }
 
-        for (Button btn : botonesOpcion) {
+        for (Button btn : optionButtons) {
             if ((boolean) btn.getUserData()) {
                 btn.getStyleClass().add("correct-answer");
                 break;
@@ -158,27 +158,27 @@ public class TrivialController {
     }
 
     /**
-     * Se ejecuta cuando se pulsa el botón "Siguiente".
+     * Handles the "Next" button click.
      */
     @FXML
-    void siguientePregunta() {
-        preguntaActual++;
-        if (preguntaActual < totalPreguntas) {
-            cargarPregunta();
+    void nextQuestion() {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < totalQuestions) {
+            loadQuestion();
         } else {
-            preguntaLabel.setText(bundle.getString("game.end.title"));
-            opcionesGrid.setVisible(false);
-            siguienteButton.setVisible(false);
-            resultadoLabel.setText(bundle.getString("game.end.subtitle"));
-            resultadoLabel.setStyle("-fx-text-fill: #F39C12;");
+            questionLabel.setText(bundle.getString("game.end.title"));
+            optionsGrid.setVisible(false);
+            nextButton.setVisible(false);
+            resultLabel.setText(bundle.getString("game.end.subtitle"));
+            resultLabel.setStyle("-fx-text-fill: #F39C12;");
         }
     }
     
     /**
-     * Limpia los estilos de feedback de los botones antes de cargar una nueva pregunta.
+     * Clears feedback styles from the buttons before loading a new question.
      */
-    private void resetearBotones() {
-        for (Button btn : botonesOpcion) {
+    private void resetButtonStyles() {
+        for (Button btn : optionButtons) {
             btn.getStyleClass().removeAll("correct-answer", "wrong-answer");
         }
     }

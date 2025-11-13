@@ -17,23 +17,27 @@ public class MainApp extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         this.primaryStage = stage;
+        // Set Spanish as the default language on startup
         loadTrivialScene(new Locale("es"));
     }
 
     public void loadTrivialScene(Locale locale) throws IOException {
-
+        // Set the default Locale for the application
         Locale.setDefault(locale);
         
+        // Load the ResourceBundle corresponding to the new Locale
         ResourceBundle bundle = ResourceBundle.getBundle("com.example.trivial.bundles.messages", locale);
         
         FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("/com/example/trivial/Trivial.fxml"), bundle);
         Parent root = fxmlLoader.load();
 
+        // Pass a reference of MainApp to the controller so it can reload the scene
         TrivialController controller = fxmlLoader.getController();
         controller.setMainApp(this);
 
-        Scene scene = new Scene(root, 700, 500); 
-        scene.getStylesheets().add(getClass().getResource("/com/example/trivial/styles.css").toExternalForm());
+        Scene scene = new Scene(root, 700, 500);
+        String cssPath = getClass().getResource("/com/example/trivial/styles.css").toExternalForm();
+        scene.getStylesheets().add(cssPath);
         
         primaryStage.setTitle(bundle.getString("app.title"));
         primaryStage.setScene(scene);
@@ -41,6 +45,6 @@ public class MainApp extends Application {
     }
 
     public static void main(String[] args) {
-        launch();
+        launch(args);
     }
 }
