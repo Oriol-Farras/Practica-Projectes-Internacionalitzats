@@ -10,10 +10,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * Un juego de preguntas y respuestas profesional implementado con acm.graphics.
- * Demuestra la separación de la lógica del juego y la interfaz gráfica.
- */
 public class TriviaGame extends GraphicsProgram {
 
     // --- Constantes para la configuración de la UI ---
@@ -46,6 +42,7 @@ public class TriviaGame extends GraphicsProgram {
     private List<GRect> optionBoxes = new ArrayList<>();
     private List<GLabel> optionLabels = new ArrayList<>();
     private GRect playAgainButton;
+    private GLabel playAgainLabelText;
 
     @Override
     public void init() {
@@ -59,30 +56,24 @@ public class TriviaGame extends GraphicsProgram {
         displayCurrentQuestion();
     }
 
-    /**
-     * Inicializa o reinicia el estado del juego y la interfaz de usuario.
-     */
     private void setupGame() {
-        removeAll(); // Limpia la pantalla para un nuevo juego
+        removeAll();
         optionBoxes.clear();
         optionLabels.clear();
-        
+        playAgainButton = null;
+        playAgainLabelText = null;
+
         score = 0;
         currentQuestionIndex = 0;
         loadQuestions();
         setupUI();
     }
     
-    /**
-     * Crea y posiciona todos los objetos gráficos iniciales en la pantalla.
-     */
     private void setupUI() {
-        // Etiqueta para la pregunta
         questionLabel = new GLabel("");
         questionLabel.setFont(QUESTION_FONT);
         add(questionLabel, 50, 80);
 
-        // Etiquetas para la puntuación
         GLabel scoreTextLabel = new GLabel("Puntuación:");
         scoreTextLabel.setFont(SCORE_FONT);
         add(scoreTextLabel, getWidth() - 150, 40);
@@ -91,35 +82,28 @@ public class TriviaGame extends GraphicsProgram {
         scoreValueLabel.setFont(SCORE_FONT);
         add(scoreValueLabel, getWidth() - 70, 40);
 
-        // Etiqueta para la retroalimentación (Correcto/Incorrecto)
         feedbackLabel = new GLabel("");
         feedbackLabel.setFont(FEEDBACK_FONT);
-        add(feedbackLabel); // Se posicionará más tarde
+        add(feedbackLabel);
         
-        // Crear botones para las 4 opciones de respuesta
         double startY = 150;
         for (int i = 0; i < 4; i++) {
             double y = startY + i * (BUTTON_HEIGHT + BUTTON_SPACING);
             
-            // El rectángulo del botón
             GRect optionBox = new GRect((getWidth() - BUTTON_WIDTH) / 2, y, BUTTON_WIDTH, BUTTON_HEIGHT);
             optionBox.setFilled(true);
             optionBox.setFillColor(BUTTON_COLOR);
             optionBoxes.add(optionBox);
             add(optionBox);
 
-            // El texto del botón
             GLabel optionLabel = new GLabel("");
             optionLabel.setFont(OPTION_FONT);
             optionLabel.setColor(BUTTON_TEXT_COLOR);
             optionLabels.add(optionLabel);
-            add(optionLabel); // Se posiciona junto con el texto
+            add(optionLabel);
         }
     }
 
-    /**
-     * Carga las preguntas del juego. En una aplicación real, esto podría venir de un archivo.
-     */
     private void loadQuestions() {
         questions = new ArrayList<>();
         questions.add(new Question("¿Cuál es la capital de Francia?",
@@ -132,75 +116,66 @@ public class TriviaGame extends GraphicsProgram {
                 Arrays.asList("Mario Vargas Llosa", "Julio Cortázar", "Jorge Luis Borges", "Gabriel García Márquez"), 3));
     }
 
-    /**
-     * Actualiza la pantalla con la pregunta actual.
-     */
     private void displayCurrentQuestion() {
         Question q = questions.get(currentQuestionIndex);
 
-        // Actualizar el texto de la pregunta
         questionLabel.setLabel(q.getQuestionText());
         
-        // Actualizar el texto y la apariencia de los botones de opción
         for (int i = 0; i < q.getOptions().size(); i++) {
             GRect box = optionBoxes.get(i);
             GLabel label = optionLabels.get(i);
             
             box.setFillColor(BUTTON_COLOR);
+            box.setVisible(true);
             label.setLabel(q.getOptions().get(i));
-            // Centrar el texto dentro del botón
+            
             double labelX = box.getX() + (box.getWidth() - label.getWidth()) / 2;
             double labelY = box.getY() + (box.getHeight() + label.getAscent()) / 2 - 5;
             label.setLocation(labelX, labelY);
+            label.setVisible(true);
         }
 
-        feedbackLabel.setLabel(""); // Limpiar la retroalimentación anterior
+        feedbackLabel.setLabel("");
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
+        // LA LÍNEA CRÍTICA ESTÁ AQUÍ, YA CORREGIDA
         GObject obj = getElementAt(e.getX(), e.getY());
 
-        if (playAgainButton != null && playAgainButton.contains(e.getPoint())) {
-            // Si se hace clic en "Jugar de Nuevo"
+        if (playAgainButton != null && (obj == playAgainButton || obj == playAgainLabelText)) {
             run();
         } else {
-            // Si se hace clic en una opción de respuesta
             for (int i = 0; i < optionBoxes.size(); i++) {
                 if (obj == optionBoxes.get(i) || obj == optionLabels.get(i)) {
-                    handleAnswer(i);
-                    return; // Salir después de procesar la respuesta
+                    if (feedbackLabel.getLabel().equals("")) {
+                        handleAnswer(i);
+                    }
+                    return;
                 }
             }
         }
     }
 
-    /**
-     * Procesa la respuesta seleccionada por el usuario.
-     * @param selectedIndex El índice de la opción en la que se hizo clic.
-     */
     private void handleAnswer(int selectedIndex) {
         Question currentQuestion = questions.get(currentQuestionIndex);
-        GRect selectedBox = optionBoxes.get(selectedIndex);
-
+        
         if (currentQuestion.isCorrect(selectedIndex)) {
             score++;
             scoreValueLabel.setLabel(String.valueOf(score));
-            selectedBox.setFillColor(CORRECT_COLOR);
+            optionBoxes.get(selectedIndex).setFillColor(CORRECT_COLOR);
             feedbackLabel.setLabel("¡Correcto!");
             feedbackLabel.setColor(CORRECT_COLOR);
         } else {
-            selectedBox.setFillColor(INCORRECT_COLOR);
-            // Mostrar la respuesta correcta
+            optionBoxes.get(selectedIndex).setFillColor(INCORRECT_COLOR);
             optionBoxes.get(currentQuestion.isCorrect(0) ? 0 : currentQuestion.isCorrect(1) ? 1 : currentQuestion.isCorrect(2) ? 2 : 3).setFillColor(CORRECT_COLOR);
             feedbackLabel.setLabel("Incorrecto");
             feedbackLabel.setColor(INCORRECT_COLOR);
         }
 
-        // Centrar la etiqueta de retroalimentación
         feedbackLabel.setLocation((getWidth() - feedbackLabel.getWidth()) / 2, 480);
         
-        pause(1500); // Pausa para que el usuario vea la retroalimentación
+        pause(1500);
         
         currentQuestionIndex++;
         if (currentQuestionIndex < questions.size()) {
@@ -210,9 +185,6 @@ public class TriviaGame extends GraphicsProgram {
         }
     }
 
-    /**
-     * Muestra la pantalla de fin de juego con la puntuación final.
-     */
     private void showFinalScreen() {
         removeAll();
         GLabel gameOverLabel = new GLabel("Juego Terminado");
@@ -223,15 +195,14 @@ public class TriviaGame extends GraphicsProgram {
         finalScoreLabel.setFont(QUESTION_FONT);
         add(finalScoreLabel, (getWidth() - finalScoreLabel.getWidth()) / 2, 250);
 
-        // Botón para jugar de nuevo
         playAgainButton = new GRect(200, 70);
         playAgainButton.setFilled(true);
         playAgainButton.setFillColor(BUTTON_COLOR);
         add(playAgainButton, (getWidth() - playAgainButton.getWidth()) / 2, 350);
 
-        GLabel playAgainLabel = new GLabel("Jugar de Nuevo");
-        playAgainLabel.setFont(OPTION_FONT);
-        playAgainLabel.setColor(BUTTON_TEXT_COLOR);
-        add(playAgainLabel, (getWidth() - playAgainLabel.getWidth()) / 2, 350 + (playAgainButton.getHeight() + playAgainLabel.getAscent()) / 2 - 5);
+        playAgainLabelText = new GLabel("Jugar de Nuevo");
+        playAgainLabelText.setFont(OPTION_FONT);
+        playAgainLabelText.setColor(BUTTON_TEXT_COLOR);
+        add(playAgainLabelText, (getWidth() - playAgainLabelText.getWidth()) / 2, 350 + (playAgainButton.getHeight() + playAgainLabelText.getAscent()) / 2 - 5);
     }
 }
