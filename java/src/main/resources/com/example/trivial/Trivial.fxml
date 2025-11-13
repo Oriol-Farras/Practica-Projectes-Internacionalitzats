@@ -4,23 +4,35 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.HBox?>
 
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.trivial.TrivialController">
+<VBox alignment="CENTER" spacing="30" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.trivial.TrivialController">
     <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+        <Insets top="20" right="20" bottom="20" left="20"/>
     </padding>
 
-    <Label fx:id="preguntaLabel" styleClass="pregunta-label" text="Aquí va la pregunta"/>
+    <!-- Etiqueta para la pregunta -->
+    <Label fx:id="preguntaLabel" text="Cargando pregunta..." textAlignment="CENTER"/>
 
-    <VBox fx:id="opcionesBox" alignment="CENTER" spacing="10.0">
-        <Button fx:id="opcion1Button" onAction="#opcionSeleccionada" text="Opción 1"/>
-        <Button fx:id="opcion2Button" onAction="#opcionSeleccionada" text="Opción 2"/>
-        <Button fx:id="opcion3Button" onAction="#opcionSeleccionada" text="Opción 3"/>
-        <Button fx:id="opcion4Button" onAction="#opcionSeleccionada" text="Opción 4"/>
-    </VBox>
+    <!-- Cuadrícula para las opciones de respuesta -->
+    <GridPane fx:id="opcionesGrid" hgap="15" vgap="15" alignment="CENTER">
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"/>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"/>
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints vgrow="SOMETIMES" minHeight="10.0"/>
+            <RowConstraints vgrow="SOMETIMES" minHeight="10.0"/>
+        </rowConstraints>
+    </GridPane>
 
-    <Label fx:id="resultadoLabel" styleClass="resultado-label"/>
+    <!-- Contenedor para el resultado y el botón de siguiente -->
+    <HBox alignment="CENTER" spacing="20" minHeight="50">
+        <Label fx:id="resultadoLabel"/>
+        <Button fx:id="siguienteButton" onAction="#siguientePregunta" text="Siguiente" visible="false"/>
+    </HBox>
 
-    <Button fx:id="siguienteButton" onAction="#siguientePregunta" text="Siguiente Pregunta" visible="false"/>
 </VBox>

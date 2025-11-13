@@ -1,27 +1,67 @@
+/* --- ESTILOS GENERALES Y FUENTES --- */
 .root {
-    -fx-background-color: #f4f4f4;
-    -fx-font-family: "Arial";
+    -fx-background-color: #2B3E50; /* Azul oscuro de fondo */
+    -fx-font-family: "Segoe UI", "Helvetica", "Arial", sans-serif;
+    -fx-padding: 20px;
 }
 
-.pregunta-label {
+/* --- ETIQUETA DE LA PREGUNTA --- */
+#preguntaLabel {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #FFFFFF; /* Texto blanco */
+    -fx-wrap-text: true; /* Para que el texto se ajuste si es muy largo */
+    -fx-alignment: center;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 10, 0, 0, 2);
+}
+
+/* --- BOTONES DE RESPUESTA --- */
+.button {
+    -fx-background-color: #4A6572; /* Gris azulado */
+    -fx-text-fill: #F0F0F0;
+    -fx-font-size: 16px;
+    -fx-background-radius: 8px; /* Bordes redondeados */
+    -fx-pref-width: 250px;
+    -fx-pref-height: 60px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 5, 0, 0, 1);
+    
+    /* Transición suave para los efectos */
+    -fx-transition: -fx-background-color 0.2s, -fx-transform 0.2s;
+}
+
+.button:hover {
+    -fx-background-color: #5E8294; /* Color más claro al pasar el ratón */
+    -fx-transform: scale(1.03); /* Ligeramente más grande */
+}
+
+/* --- ESTILOS PARA FEEDBACK DE RESPUESTAS --- */
+.correct-answer {
+    -fx-background-color: #2ECC71; /* Verde para la respuesta correcta */
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-transform: scale(1.05);
+}
+
+.wrong-answer {
+    -fx-background-color: #E74C3C; /* Rojo para la respuesta incorrecta seleccionada */
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+/* --- ETIQUETA DE RESULTADO Y BOTÓN 'SIGUIENTE' --- */
+#resultadoLabel {
     -fx-font-size: 20px;
     -fx-font-weight: bold;
 }
 
-.button {
-    -fx-background-color: #007bff;
-    -fx-text-fill: white;
-    -fx-font-size: 14px;
-    -fx-padding: 10px 20px;
-    -fx-background-radius: 5;
-    -fx-cursor: hand;
-}
-
-.button:hover {
-    -fx-background-color: #0056b3;
-}
-
-.resultado-label {
-    -fx-font-size: 18px;
+#siguienteButton {
+    -fx-background-color: #F39C12; /* Naranja llamativo */
+    -fx-text-fill: #2B3E50;
     -fx-font-weight: bold;
+}
+
+#siguienteButton:hover {
+    -fx-background-color: #FFA726;
+    -fx-transform: scale(1.05);
 }
