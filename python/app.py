@@ -1,6 +1,7 @@
 import gettext
 import os
 from tasks import TaskManager
+import pathlib
 
 LANGUAGES = ['en', 'es', 'ca']
 
@@ -31,7 +32,9 @@ def select_language():
 def main():
     lang = select_language()
     _ = set_language(lang)
-    manager = TaskManager()
+
+    storage_path = pathlib.Path(__file__).parent / "storage.json"
+    manager = TaskManager(filename=storage_path)
 
     print(_("Welcome to the Task Manager!"))
 
