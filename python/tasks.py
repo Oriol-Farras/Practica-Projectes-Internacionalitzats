@@ -9,8 +9,15 @@ class TaskManager:
 
     def _load(self):
         if os.path.exists(self.filename):
-            with open(self.filename, "r", encoding="utf-8") as f:
-                self.tasks = json.load(f)
+            try:
+                with open(self.filename, "r", encoding="utf-8") as f:
+                    content = f.read().strip()
+                    if content:
+                        self.tasks = json.loads(content)
+                    else:
+                        self.tasks = []
+            except json.JSONDecodeError:
+                self.tasks = []
         else:
             self.tasks = []
 
