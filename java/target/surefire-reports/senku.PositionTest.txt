@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: senku.PositionTest
 -------------------------------------------------------------------------------
-Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.085 s - in senku.PositionTest
+Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.1 s - in senku.PositionTest
