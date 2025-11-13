@@ -4,8 +4,9 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.prac1</groupId>
-    <artifactId>senku-game</artifactId>
+    <!-- Coordenadas actualizadas para el nuevo proyecto (Recomendado) -->
+    <groupId>com.juegopreguntas</groupId>
+    <artifactId>trivia-game</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -15,14 +16,14 @@
     </properties>
 
     <dependencies>
-        <!-- 1. Dependencia para acm.jar que instalaremos localmente -->
+        <!-- 1. Dependencia para acm.jar -->
         <dependency>
             <groupId>com.acm</groupId>
             <artifactId>acm</artifactId>
             <version>1.0</version>
         </dependency>
 
-        <!-- 2. Dependencia para poder escribir y ejecutar tests con JUnit 5 -->
+        <!-- 2. Dependencia para JUnit 5 (para tests, si los añades) -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
@@ -33,7 +34,7 @@
 
     <build>
         <plugins>
-            <!-- 3. Plugin para instalar automáticamente acm.jar en tu repositorio local -->
+            <!-- 3. Plugin para instalar acm.jar en tu repositorio local -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-install-plugin</artifactId>
@@ -63,14 +64,14 @@
                 <version>3.0.0-M7</version>
             </plugin>
 
-            <!-- 5. Plugin para ejecutar tu juego desde la línea de comandos -->
+            <!-- 5. Plugin para ejecutar tu juego (¡ACTUALIZADO!) -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>3.1.0</version>
                 <configuration>
-                    <!-- Asegúrate de que esta es tu clase principal con el método main() -->
-                    <mainClass>senku.Senku</mainClass>
+                    <!-- Clase principal del nuevo juego de Trivia -->
+                    <mainClass>trivia.TriviaGame</mainClass>
                 </configuration>
             </plugin>
         </plugins>
