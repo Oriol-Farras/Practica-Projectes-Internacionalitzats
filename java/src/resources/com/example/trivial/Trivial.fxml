@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+
+<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.trivial.TrivialController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+    </padding>
+
+    <Label fx:id="preguntaLabel" styleClass="pregunta-label" text="Aquí va la pregunta"/>
+
+    <VBox fx:id="opcionesBox" alignment="CENTER" spacing="10.0">
+        <Button fx:id="opcion1Button" onAction="#opcionSeleccionada" text="Opción 1"/>
+        <Button fx:id="opcion2Button" onAction="#opcionSeleccionada" text="Opción 2"/>
+        <Button fx:id="opcion3Button" onAction="#opcionSeleccionada" text="Opción 3"/>
+        <Button fx:id="opcion4Button" onAction="#opcionSeleccionada" text="Opción 4"/>
+    </VBox>
+
+    <Label fx:id="resultadoLabel" styleClass="resultado-label"/>
+
+    <Button fx:id="siguienteButton" onAction="#siguientePregunta" text="Siguiente Pregunta" visible="false"/>
+</VBox>
