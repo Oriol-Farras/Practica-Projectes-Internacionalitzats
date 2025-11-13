@@ -1,0 +1,69 @@
+msgid ""
+msgstr ""
+"Language: ca\n"
+
+# --- Interface ---
+msgid "Welcome to the Task Manager!"
+msgstr "Benvingut al Gestor de Tasques!"
+
+msgid "Choose an option:"
+msgstr "Tria una opció:"
+
+msgid "Add a task"
+msgstr "Afegeix una tasca"
+
+msgid "List tasks"
+msgstr "Llista les tasques"
+
+msgid "Complete a task"
+msgstr "Completa una tasca"
+
+msgid "Delete a task"
+msgstr "Elimina una tasca"
+
+msgid "Exit"
+msgstr "Surt"
+
+# --- Add Task ---
+msgid "Enter task title: "
+msgstr "Introdueix el títol de la tasca: "
+
+msgid "Task added successfully!"
+msgstr "Tasca afegida correctament!"
+
+# --- List Tasks ---
+msgid "No tasks available."
+msgstr "No hi ha tasques disponibles."
+
+msgid "Your tasks:"
+msgstr "Les teves tasques:"
+
+msgid "Done"
+msgstr "Feta"
+
+msgid "Pending"
+msgstr "Pendent"
+
+# --- Complete Task ---
+msgid "Enter the task number to mark as complete: "
+msgstr "Introdueix el número de la tasca per marcar-la com a completada: "
+
+msgid "Task marked as complete!"
+msgstr "Tasca marcada com a completada!"
+
+# --- Delete Task ---
+msgid "Enter the task number to delete: "
+msgstr "Introdueix el número de la tasca a eliminar: "
+
+msgid "Task deleted."
+msgstr "Tasca eliminada."
+
+# --- Errors & Misc ---
+msgid "Invalid task number."
+msgstr "Número de tasca no vàlid."
+
+msgid "Invalid option. Try again."
+msgstr "Opció no vàlida. Torna-ho a provar."
+
+msgid "Goodbye!"
+msgstr "Adéu!"
