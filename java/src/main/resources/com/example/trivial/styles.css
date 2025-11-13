@@ -1,6 +1,6 @@
 /* --- ESTILOS GENERALES Y FUENTES --- */
 .root {
-    -fx-background-color: #2B3E50; 
+    -fx-background-color: #2B3E50; /* Azul oscuro de fondo */
     -fx-font-family: "Segoe UI", "Helvetica", "Arial", sans-serif;
     -fx-padding: 20px;
 }
@@ -9,42 +9,48 @@
 #preguntaLabel {
     -fx-font-size: 24px;
     -fx-font-weight: bold;
-    -fx-text-fill: #FFFFFF;
-    -fx-wrap-text: true;
+    -fx-text-fill: #FFFFFF; /* Texto blanco */
+    -fx-wrap-text: true; /* Para que el texto se ajuste si es muy largo */
     -fx-alignment: center;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 10, 0, 0, 2);
 }
 
 /* --- BOTONES DE RESPUESTA --- */
 .button {
-    -fx-background-color: #4A6572;
+    -fx-background-color: #4A6572; /* Gris azulado */
     -fx-text-fill: #F0F0F0;
     -fx-font-size: 16px;
-    -fx-background-radius: 8px; 
+    -fx-background-radius: 8px; /* Bordes redondeados */
     -fx-pref-width: 250px;
     -fx-pref-height: 60px;
     -fx-cursor: hand;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 5, 0, 0, 1);
     
-    /* Transición suave para los efectos */
-    -fx-transition: -fx-background-color 0.2s, -fx-transform 0.2s;
+    /* CORRECCIÓN: Definimos la escala inicial y la transición a las propiedades correctas */
+    -fx-scale-x: 1.0;
+    -fx-scale-y: 1.0;
+    -fx-transition: -fx-background-color 0.2s, -fx-scale-x 0.2s, -fx-scale-y 0.2s;
 }
 
 .button:hover {
-    -fx-background-color: #5E8294;
-    -fx-transform: scale(1.03); 
+    -fx-background-color: #5E8294; /* Color más claro al pasar el ratón */
+    /* CORRECCIÓN: Usamos -fx-scale-x y -fx-scale-y en lugar de -fx-transform */
+    -fx-scale-x: 1.03;
+    -fx-scale-y: 1.03;
 }
 
 /* --- ESTILOS PARA FEEDBACK DE RESPUESTAS --- */
 .correct-answer {
-    -fx-background-color: #2ECC71; 
+    -fx-background-color: #2ECC71; /* Verde para la respuesta correcta */
     -fx-text-fill: white;
     -fx-font-weight: bold;
-    -fx-transform: scale(1.05);
+    /* CORRECCIÓN: Usamos -fx-scale-x y -fx-scale-y */
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
 }
 
 .wrong-answer {
-    -fx-background-color: #E74C3C; 
+    -fx-background-color: #E74C3C; /* Rojo para la respuesta incorrecta seleccionada */
     -fx-text-fill: white;
     -fx-font-weight: bold;
 }
@@ -56,12 +62,14 @@
 }
 
 #siguienteButton {
-    -fx-background-color: #F39C12;
+    -fx-background-color: #F39C12; /* Naranja llamativo */
     -fx-text-fill: #2B3E50;
     -fx-font-weight: bold;
 }
 
 #siguienteButton:hover {
     -fx-background-color: #FFA726;
-    -fx-transform: scale(1.05);
+    /* CORRECCIÓN: Usamos -fx-scale-x y -fx-scale-y */
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
 }
