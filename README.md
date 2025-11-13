@@ -1,10 +1,10 @@
-# Practica-Projectes-Internacionalitzats
+# Actividad 2 - Internacionalización
 
 Este repositorio contiene varias aplicaciones de ejemplo para practicar la **internacionalización** (i18n).  
 Actualmente incluye:
 
 - **Aplicación Python**: Gestor de tareas de terminal internacionalizado.  
-- **Aplicación Java**: *(en desarrollo)*  
+- **Aplicación Java**: Un juego de Trivial de escritorio multilingüe (español, inglés y catalán) construido con JavaFX y Maven.  
 
 ---
 
@@ -75,6 +75,57 @@ python3 app.py
 
 ---
 
-## Aplicación Java
+## Aplicación Java: Juego de Trivial Internacionalizado
 
-*(Sección reservada para la aplicación Java, en desarrollo)*
+Esta aplicación de escritorio es un juego de Trivial con una interfaz gráfica desarrollada en **JavaFX**. Soporta **varios idiomas** (español, inglés y catalán) que se pueden cambiar dinámicamente desde la propia aplicación. La internacionalización se gestiona mediante ficheros **ResourceBundle**.
+
+### Estructura del proyecto Java
+
+```
+java/
+├── pom.xml          
+└── src/
+    └── main/
+        ├── java/
+        │   └── com/example/trivial/
+        │       ├── MainApp.java            
+        │       └── TrivialController.java  
+        └── resources/
+            └── com/example/trivial/
+                ├── Trivial.fxml            
+                ├── styles.css              
+                └── bundles/                
+                    ├── messages_es.properties
+                    ├── messages_en.properties
+                    └── messages_ca.properties
+```
+
+### Requisitos
+
+- JDK 17 o superior
+- Maven 3.6+
+
+---
+
+### Instalación y ejecución
+
+1. Dirígete al directorio de la aplicación:
+
+    ```bash
+    cd Practica-Projectes-Internacionalitzats/java
+    ```
+
+2. Maven gestionará la descarga de las dependencias de JavaFX automáticamente. Simplemente ejecuta el siguiente comando para compilar y lanzar la aplicación:
+
+    ```bash
+    mvn clean javafx:run
+    ```
+
+3. La aplicación se compilará y se lanzará en una nueva ventana. Puedes cambiar el idioma usando el selector en la esquina superior derecha.
+
+---
+
+### Notas
+
+- Todo el texto visible (preguntas, respuestas, botones...) se carga desde los ficheros `.properties` ubicados en `src/main/resources/com/example/trivial/bundles/`.
+- Puedes añadir nuevos idiomas creando un nuevo fichero `messages_xx.properties` (donde `xx` es el código del idioma) y añadiendo el `Locale` correspondiente en el `TrivialController.java`.````
