@@ -12,10 +12,10 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("Trivial.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("/com/example/trivial/Trivial.fxml"));
         Parent root = fxmlLoader.load();
         Scene scene = new Scene(root, 600, 400);
-        scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/com/example/trivial/styles.css").toExternalForm());
         stage.setTitle("Trivial Moderno");
         stage.setScene(scene);
         stage.show();
