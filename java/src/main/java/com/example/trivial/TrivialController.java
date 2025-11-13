@@ -32,7 +32,7 @@ public class TrivialController {
 
     @FXML
     public void initialize() {
-        // Carga el resource bundle basándose en el Locale por defecto (establecido en MainApp)
+
         bundle = ResourceBundle.getBundle("com.example.trivial.bundles.messages");
         totalPreguntas = Integer.parseInt(bundle.getString("total.questions"));
         
@@ -53,10 +53,9 @@ public class TrivialController {
      * Configura el selector de idioma, sus opciones y su comportamiento.
      */
     private void setupLanguageSelector() {
-        // Añade los Locales soportados al ChoiceBox
+
         languageSelector.getItems().addAll(new Locale("es"), new Locale("en"), new Locale("ca"));
         
-        // Usa un StringConverter para mostrar nombres amigables en lugar de "es", "en", "ca"
         languageSelector.setConverter(new StringConverter<>() {
             @Override
             public String toString(Locale locale) {
@@ -66,17 +65,14 @@ public class TrivialController {
                 return null;
             }
             @Override
-            public Locale fromString(String string) { return null; } // No es necesario
+            public Locale fromString(String string) { return null; }
         });
 
-        // Establece el valor actual del selector al idioma con el que se cargó la app
         languageSelector.setValue(Locale.getDefault());
         
-        // Añade un listener para detectar cambios de idioma
         languageSelector.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null && !newValue.equals(oldValue)) {
                 try {
-                    // Llama a MainApp para recargar toda la escena con el nuevo idioma
                     mainApp.loadTrivialScene(newValue);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -101,7 +97,7 @@ public class TrivialController {
             Button button = new Button();
             button.setOnAction(this::opcionSeleccionada);
             botonesOpcion.add(button);
-            opcionesGrid.add(button, i % 2, i / 2); // Añade en una cuadrícula 2x2
+            opcionesGrid.add(button, i % 2, i / 2);
         }
     }
     
@@ -114,11 +110,9 @@ public class TrivialController {
         siguienteButton.setVisible(false);
         opcionesGrid.setDisable(false);
         
-        // Construye las claves para la pregunta actual (ej. "question.1.statement")
         String keyBase = "question." + (preguntaActual + 1);
         preguntaLabel.setText(bundle.getString(keyBase + ".statement"));
 
-        // Carga la respuesta correcta y las incorrectas
         String respuestaCorrecta = bundle.getString(keyBase + ".correct");
         List<String> opciones = new ArrayList<>();
         opciones.add(respuestaCorrecta);
@@ -126,15 +120,12 @@ public class TrivialController {
         opciones.add(bundle.getString(keyBase + ".wrong2"));
         opciones.add(bundle.getString(keyBase + ".wrong3"));
         
-        // Baraja las opciones para que la correcta no aparezca siempre en la misma posición
         Collections.shuffle(opciones);
 
-        // Asigna el texto y la información (si es correcta o no) a cada botón
         for (int i = 0; i < botonesOpcion.size(); i++) {
             Button button = botonesOpcion.get(i);
             String opcionActual = opciones.get(i);
             button.setText(opcionActual);
-            // Guardamos un booleano en el botón para saber si es la respuesta correcta
             button.setUserData(opcionActual.equals(respuestaCorrecta));
         }
     }
@@ -158,7 +149,6 @@ public class TrivialController {
             botonSeleccionado.getStyleClass().add("wrong-answer");
         }
 
-        // Resalta la respuesta que era correcta en verde
         for (Button btn : botonesOpcion) {
             if ((boolean) btn.getUserData()) {
                 btn.getStyleClass().add("correct-answer");
@@ -176,7 +166,6 @@ public class TrivialController {
         if (preguntaActual < totalPreguntas) {
             cargarPregunta();
         } else {
-            // Fin del juego
             preguntaLabel.setText(bundle.getString("game.end.title"));
             opcionesGrid.setVisible(false);
             siguienteButton.setVisible(false);
