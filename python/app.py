@@ -1,88 +1,76 @@
-import gettext
+from flask import Flask, render_template, request, session, redirect, url_for
+from flask_babel import Babel, gettext as _
 import os
-from tasks import TaskManager
-import pathlib
 
-LANGUAGES = ['en', 'es', 'ca']
+app = Flask(__name__)
+app.secret_key = 'palabra_secreta_super_segura'
 
-def set_language(lang_code):
-    """Configura el idioma del sistema."""
-    if lang_code not in LANGUAGES:
-        lang_code = 'en'
+# Configuración i18n
+def get_locale():
+    lang = request.args.get('lang')
+    if lang in ['en', 'es', 'ca']:
+        session['lang'] = lang
+    return session.get('lang', 'es')
 
-    localedir = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'locale')
-    lang = gettext.translation('messages', localedir=localedir, languages=[lang_code], fallback=True)
-    lang.install()
-    return lang.gettext
+app.config['BABEL_DEFAULT_LOCALE'] = 'es'
+babel = Babel(app, locale_selector=get_locale)
 
+# Palabras objetivo (5 letras)
+TARGET_WORDS = {
+    'en': 'WORLD', # World
+    'es': 'MUNDO', # Mundo
+    'ca': 'POBLE'  # Poble
+}
 
-def select_language():
-    print("Select language / Selecciona idioma / Selecciona llengua:")
-    print("1. English")
-    print("2. Español")
-    print("3. Català")
-    choice = input("> ")
-    if choice == '2':
-        return 'es'
-    elif choice == '3':
-        return 'ca'
-    return 'en'
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    lang = get_locale()
+    target = TARGET_WORDS.get(lang, 'MUNDO')
+    
+    if 'guesses' not in session:
+        session['guesses'] = []
+    if 'game_over' not in session:
+        session['game_over'] = False
 
-
-def main():
-    lang = select_language()
-    _ = set_language(lang)
-
-    storage_path = pathlib.Path(__file__).parent / "storage.json"
-    manager = TaskManager(filename=storage_path)
-
-    print(_("Welcome to the Task Manager!"))
-
-    while True:
-        print("\n" + _("Choose an option:"))
-        print("1.", _("Add a task"))
-        print("2.", _("List tasks"))
-        print("3.", _("Complete a task"))
-        print("4.", _("Delete a task"))
-        print("5.", _("Exit"))
-
-        choice = input("> ")
-
-        if choice == '1':
-            title = input(_("Enter task title: "))
-            manager.add_task(title)
-            print(_("Task added successfully!"))
-
-        elif choice == '2':
-            tasks = manager.list_tasks()
-            if not tasks:
-                print(_("No tasks available."))
-            else:
-                print(_("Your tasks:"))
-                for i, task in enumerate(tasks, 1):
-                    status = _("Done") if task['done'] else _("Pending")
-                    print(f"{i}. {task['title']} [{status}]")
-
-        elif choice == '3':
-            index = input(_("Enter the task number to mark as complete: "))
-            if manager.complete_task(index):
-                print(_("Task marked as complete!"))
-            else:
-                print(_("Invalid task number."))
-
-        elif choice == '4':
-            index = input(_("Enter the task number to delete: "))
-            if manager.delete_task(index):
-                print(_("Task deleted."))
-            else:
-                print(_("Invalid task number."))
-
-        elif choice == '5':
-            print(_("Goodbye!"))
-            break
+    message = ""
+    
+    if request.method == 'POST' and not session['game_over']:
+        guess = request.form.get('guess', '').upper().strip()
+        
+        if len(guess) != 5:
+            message = _("La palabra debe tener 5 letras.")
         else:
-            print(_("Invalid option. Try again."))
+            # Lógica del juego (Colores)
+            result = []
+            for i, letter in enumerate(guess):
+                status = 'absent' # Gris
+                if letter == target[i]:
+                    status = 'correct' # Verde
+                elif letter in target:
+                    status = 'present' # Amarillo
+                result.append({'letter': letter, 'status': status})
+            
+            # Guardar intento
+            guesses = session['guesses']
+            guesses.append(result)
+            session['guesses'] = guesses
+            
+            # Comprobar victoria
+            if guess == target:
+                message = _("¡HAS GANADO! Eres increíble.")
+                session['game_over'] = True
+            elif len(guesses) >= 6:
+                message = _("Juego terminado. La palabra era: %(word)s", word=target)
+                session['game_over'] = True
 
+    return render_template('index.html', guesses=session['guesses'], message=message, game_over=session['game_over'])
 
-if __name__ == "__main__":
-    main()
+@app.route('/reset')
+def reset():
+    lang = session.get('lang', 'es')
+    session.clear()
+    session['lang'] = lang
+    return redirect(url_for('index'))
+
+if __name__ == '__main__':
+    app.run(debug=True)

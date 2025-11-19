@@ -1,0 +1,4 @@
+Flask
+Flask-Babel
+fastf1
+pandas

@@ -1,0 +1,17 @@
+msgid "La palabra debe tener 5 letras."
+msgstr "La palabra debe tener 5 letras."
+
+msgid "¡HAS GANADO! Eres increíble."
+msgstr "¡HAS GANADO! Eres increíble."
+
+msgid "Juego terminado. La palabra era: %(word)s"
+msgstr "Juego terminado. La palabra era: %(word)s"
+
+msgid "Enviar"
+msgstr "Enviar"
+
+msgid "Jugar de nuevo"
+msgstr "Jugar de nuevo"
+
+msgid "Adivina la palabra de 5 letras."
+msgstr "Adivina la palabra de 5 letras."

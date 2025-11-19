@@ -1,0 +1,13 @@
+body { background-color: #f0f2f5; }
+.board-container { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+.word-row { display: flex; gap: 5px; }
+.letter-box {
+    width: 60px; height: 60px;
+    border: 2px solid #d3d6da;
+    display: flex; justify-content: center; align-items: center;
+    font-size: 2rem; font-weight: bold; text-transform: uppercase;
+    background: white;
+}
+.correct { background-color: #6aaa64; color: white; border-color: #6aaa64; } /* Verde */
+.present { background-color: #c9b458; color: white; border-color: #c9b458; } /* Amarillo */
+.absent  { background-color: #787c7e; color: white; border-color: #787c7e; } /* Gris */
