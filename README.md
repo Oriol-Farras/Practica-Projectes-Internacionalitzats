@@ -3,77 +3,110 @@
 Este repositorio contiene varias aplicaciones de ejemplo para practicar la **internacionalización** (i18n).  
 Actualmente incluye:
 
-- **Aplicación Python**: Gestor de tareas de terminal internacionalizado.  
+- **Aplicación Flask**: Juego tipo Wordle internacionalizado con soporte de idiomas (es, en, ca).
 - **Aplicación Java**: Un juego de Trivial de escritorio multilingüe (español, inglés y catalán) construido con JavaFX y Maven.  
 
 ---
 
-## Aplicación Python: Gestor de Tareas Internacionalizado
+# Aplicación Flask: Mini-Wordle Multilingüe
 
-Esta aplicación de terminal permite crear, listar, completar y eliminar tareas, y soporta **varios idiomas**: inglés (por defecto), español y catalán.  
-La internacionalización se realiza usando **gettext**.
+Esta es una aplicación web inspirada en *Wordle*, desarrollada con
+**Flask** y con soporte de idiomas mediante **Flask-Babel**.\
+El usuario puede jugar adivinando una palabra de 5 letras, con un máximo
+de 6 intentos, y elegir entre **inglés**, **español** y **catalán**.
 
-### Estructura del proyecto Python
+## Estructura del proyecto
 
+    project/
+    ├── app.py                    
+    ├── requirements.txt          
+    ├── templates/
+    │   └── index.html            
+    ├── static/                   
+    │   └── styles.css
+    └── translations/            
+        ├── es/LC_MESSAGES/messages.po
+        ├── en/LC_MESSAGES/messages.po
+        └── ca/LC_MESSAGES/messages.po
+
+## Requisitos
+
+-   Python **3.12+**
+-   pip
+-   Flask\
+-   Flask-Babel\
+
+## Instalación y ejecución (modo local)
+
+### 1. Ir al directorio del proyecto
+
+``` bash
+cd project
 ```
-python/
-├── app.py           # Aplicación principal
-├── tasks.py         # Lógica de gestión de tareas
-├── storage.json     # Archivo JSON donde se guardan las tareas
-├── locale/          # Traducciones
-│   ├── en/LC_MESSAGES/messages.po
-│   ├── es/LC_MESSAGES/messages.po
-│   └── ca/LC_MESSAGES/messages.po
-└── requirements.txt # Dependencias de Python
-```
 
-### Requisitos
+### 2. Crear un entorno virtual (recomendado)
 
-- Python 3.11+  
-- pip  
-- Babel 
-
----
-
-### Instalación y ejecución
-
-1. Dirigete al directorio de la aplicación:
-
-```bash
-cd Practica-Projectes-Internacionalitzats/python
-```
-
-2. Crea un entorno virtual (recomendado):
-
-```bash
+``` bash
 python3 -m venv venv
-source venv/bin/activate  # Linux / Mac
-# o en Windows: venv\Scripts\activate
+source venv/bin/activate      # Linux / macOS
+# Windows:
+# venv\Scripts\activate
 ```
 
-3. Instala las dependencias:
+### 3. Instalar dependencias
 
-```bash
+``` bash
 pip install -r requirements.txt
 ```
 
-4. Ejecuta la aplicación:
+### 4. Ejecutar la aplicación Flask
 
-```bash
-python3 app.py
+``` bash
+python app.py
 ```
 
-5. Selecciona el idioma cuando se te pregunte y comienza a usar el gestor de tareas.
+Luego abre en tu navegador:
 
----
+    http://localhost:5000
 
-### Notas
+## Selección de idioma
 
-- Las tareas se guardan en `storage.json`. Si el archivo está vacío o no existe, la aplicación lo inicializa automáticamente.  
-- Puedes añadir nuevos idiomas creando las carpetas correspondientes en `locale/` y generando los archivos `.po` y `.mo`.  
+El idioma se elige automáticamente mediante el parámetro `?lang=` en la
+URL:
+
+-   Español:
+
+        http://localhost:5000?lang=es
+
+-   Inglés:
+
+        http://localhost:5000?lang=en
+
+-   Catalán:
+
+        http://localhost:5000?lang=ca
+
+Flask almacena el idioma en la sesión del usuario.
+
+## ¿Cómo funciona el juego?
+
+-   El usuario envía una palabra de **5 letras**.
+-   Cada letra se marca como:
+    -   **correct** → posición y letra correcta\
+    -   **present** → letra correcta en posición incorrecta\
+    -   **absent** → la letra no está en la palabra\
+-   El jugador tiene **6 intentos**.
+-   El juego termina al acertar o agotar intentos.
+-   Se puede reiniciar en `/reset`.
 
 
----
+## Notas
+
+-   Las traducciones se ubican en `translations/`.\
+-   Puedes añadir más idiomas generando nuevos `.po` / `.mo` con Babel.\
+-   La palabra objetivo está definida en el diccionario `TARGET_WORDS`
+    dentro de `app.py`.
+
 
 ## Aplicación Java: Juego de Trivial Internacionalizado
 
