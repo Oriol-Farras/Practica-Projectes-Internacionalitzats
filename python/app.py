@@ -5,7 +5,6 @@ import os
 app = Flask(__name__)
 app.secret_key = 'palabra_secreta_super_segura'
 
-# Configuración i18n
 def get_locale():
     lang = request.args.get('lang')
     if lang in ['en', 'es', 'ca']:
@@ -15,11 +14,10 @@ def get_locale():
 app.config['BABEL_DEFAULT_LOCALE'] = 'es'
 babel = Babel(app, locale_selector=get_locale)
 
-# Palabras objetivo (5 letras)
 TARGET_WORDS = {
-    'en': 'WORLD', # World
-    'es': 'MUNDO', # Mundo
-    'ca': 'POBLE'  # Poble
+    'en': 'WORLD',
+    'es': 'MUNDO',
+    'ca': 'POBLE'  
 }
 
 @app.route('/', methods=['GET', 'POST'])
@@ -40,22 +38,20 @@ def index():
         if len(guess) != 5:
             message = _("La palabra debe tener 5 letras.")
         else:
-            # Lógica del juego (Colores)
+
             result = []
             for i, letter in enumerate(guess):
-                status = 'absent' # Gris
+                status = 'absent' 
                 if letter == target[i]:
-                    status = 'correct' # Verde
+                    status = 'correct' 
                 elif letter in target:
-                    status = 'present' # Amarillo
+                    status = 'present'
                 result.append({'letter': letter, 'status': status})
             
-            # Guardar intento
             guesses = session['guesses']
             guesses.append(result)
             session['guesses'] = guesses
             
-            # Comprobar victoria
             if guess == target:
                 message = _("¡HAS GANADO! Eres increíble.")
                 session['game_over'] = True
